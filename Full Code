@@ -1,0 +1,129 @@
+#include<stdio.h>
+#include<stdlib.h>
+#include<conio.h>
+ 
+int main() 
+{ 
+      int a, b, i, x, z, lim, pos; 
+      
+      int wait_time = 0, count = 0, sum = 0, time_quantum, turnaround_time = 0; 
+      
+	  int p[10],prio[10], a_time[10], s_time[10], temp[10] ;
+      
+	  float avg_wait_time, avg_turnaround_time;
+	  
+	  printf("*****************************************\n");
+	  printf("** Prepared by - Aman Pratap Singh     **\n");
+	  printf("** Reg No. 11703177 Roll No. K17FB-B55 **\n");
+	  printf("*****************************************\n");
+      
+	  printf("\nEnter Require Number of Processes :"); 
+      
+	  scanf("%d", &lim); 
+      
+	  x = lim; 
+      for(a = 0; a < lim; a++) 
+      {
+	    p[a]=a+1;
+	   
+	    prio[a]=0;
+            printf("\nEnter Details of Process respectively [%d]\n", a + 1);
+            
+            printf("Arrival Time:\t");
+            scanf("%d", &a_time[a]);
+            printf("Service Time:\t");
+            scanf("%d", &s_time[a]); 
+            temp[a] = s_time[a];
+      }
+	   
+      printf("\nEnter the Time Quantum:"); 
+      scanf("%d", &time_quantum); 
+      printf("\nProcess ID\tService Time\t Turnaround Time\t Waiting Time\t Priority\n");
+      
+      for(sum = 0, a = 0; x != 0;) 
+      { 
+
+		    for(z=0;z<lim;z++)
+		    {
+			int temp1;
+			pos=z;
+			for(b=z+1;b<lim;b++)
+			{
+			    if(prio[b]<prio[pos])
+				pos=b;
+			}
+		 
+		temp1=prio[z];
+	
+		prio[z]=prio[pos];
+	
+		prio[pos]=temp1;
+		 
+			temp1=s_time[z];
+			s_time[z]=s_time[pos];
+			s_time[pos]=temp1;
+		 	temp1=a_time[z];
+			a_time[z]=a_time[pos];
+			a_time[pos]=temp1;
+
+			temp1=p[z];
+			p[z]=p[pos];
+			p[pos]=temp1;
+
+			temp1=temp[z];
+			temp[z]=temp[pos];
+			temp[pos]=temp1;
+		    }
+		{
+		}
+            
+			if(temp[a] <= time_quantum && temp[a] > 0) 
+            { 
+                  sum = sum + temp[a]; 
+                  temp[a] = 0; 
+                  count = 1; 
+            } 
+            
+			else if(temp[a] > 0) 
+            { 
+                  temp[a] = temp[a] - time_quantum; 
+                  sum = sum + time_quantum; 
+            } 
+
+	for(i=0;i<lim;i++)
+		{
+			if(i==a)
+			prio[i]+=1;
+			else
+			prio[i]+=2;
+		}
+
+            if(temp[a] == 0 && count == 1) 
+            { 
+                  x--; 
+                  printf("\nP[%d]\t%d\t\t %d\t\t %d\t\t%d\t\t%d", p[a], s_time[a], sum - a_time[a], sum - a_time[a] - s_time[a],prio[a]);
+                  
+                  wait_time = wait_time + sum - a_time[a] - s_time[a]; 
+                  turnaround_time = turnaround_time + sum - a_time[a]; 
+                  count
+				   = 0; 
+            } 
+            if(a == lim - 1) 
+            {
+                  a = 0; 
+            
+			}
+            else if(a_time[a + 1] <= sum) 
+            {
+                  a++;
+            
+			}
+            else 
+            {
+            	
+                  a = 0 ;
+            
+			}		
+      } 
+      return 0; 
+}
